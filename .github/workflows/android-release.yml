@@ -1,0 +1,88 @@
+name: Android APK
+
+# Builds an installable Android APK and publishes it as a GitHub Release.
+# Push a tag like v1.0.1, or run it by hand from the Actions tab with a version number.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to publish, like 1.0.1
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+
+jobs:
+  apk:
+    name: Build and publish the APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ON_TRACK_OFFLINE: '1'
+      VERSION: ${{ inputs.version || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Work out the version
+        id: v
+        run: |
+          v="${VERSION#v}"
+          echo "name=$v" >> "$GITHUB_OUTPUT"
+          echo "tag=v$v" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: npm ci
+
+      - name: Generate the Android project
+        run: npx expo prebuild --platform android --no-install --clean
+
+      - name: Set the version
+        run: |
+          sed -i "s/versionCode [0-9]*/versionCode ${{ github.run_number }}/" android/app/build.gradle
+          sed -i "s/versionName \"[^\"]*\"/versionName \"${{ steps.v.outputs.name }}\"/" android/app/build.gradle
+          grep -n "versionCode\|versionName" android/app/build.gradle
+
+      - name: Build the APK
+        working-directory: android
+        # arm64 covers practically every Android phone sold since 2017 and keeps the APK small.
+        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a
+
+      - name: Name the APK
+        run: |
+          cp android/app/build/outputs/apk/release/app-release.apk on-track.apk
+          ls -la on-track.apk
+
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.v.outputs.tag }}
+          name: On Track ${{ steps.v.outputs.name }}
+          make_latest: true
+          files: on-track.apk
+          body: |
+            ## Install on Android
+
+            1. Download **on-track.apk** below on your phone.
+            2. Open it. If Android asks, allow your browser or Files app to install unknown apps.
+            3. Tap **Install**.
+
+            Your check-ins, weigh-ins and notes are stored only on your phone. This build has no internet permission, so it cannot send anything anywhere. Use **Plan, Backup and restore** to keep a copy.
+
+            To update later, install the newer APK over this one. Your data stays.

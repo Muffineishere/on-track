@@ -4,6 +4,22 @@ A diet-adherence tracker for one person in Malaysia, with Tunas, a small plant c
 
 Once a day you tell Tunas how it went: **Followed**, **Mostly** or **Missed**. Mostly still counts, a free miss arrives every Monday, and a bad day never takes away progress already made. The month grows into a little garden island, Tunas moves from seed to little tree, and outfits unlock along the way. Weight tracking is optional and shows a smoothed trend, not the daily number.
 
+## Download for Android
+
+**[Download on-track.apk](https://github.com/Muffineishere/on-track/releases/latest/download/on-track.apk)**, or see every version on the [Releases page](https://github.com/Muffineishere/on-track/releases).
+
+1. Open the link on your Android phone and download **on-track.apk**.
+2. Open the file. If Android asks, allow your browser or Files app to install unknown apps.
+3. Tap **Install**. To update later, install a newer APK over it; your data stays.
+
+There is no iPhone download: Apple only allows installing apps through the App Store or TestFlight. See _Build the iPhone and Android apps_ below.
+
+## Your data stays on your phone
+
+- Check-ins, notes, rules and weigh-ins are saved in the app's own storage on your phone. There is no account, no server, no cloud sync and no analytics.
+- The APK on GitHub is built **without the internet permission**, so Android itself blocks the app from sending anything anywhere.
+- Uninstalling the app deletes its data. Use **Plan, Backup and restore** to save a copy as a file (to your phone's Files, Google Drive, or wherever you choose) and restore it later or on a new phone.
+
 ## What's in the app
 
 | Tab        | What it does                                                                                                                                                                                                                                                                                                     |
@@ -26,7 +42,8 @@ Everything stays on the device. There is no account, no server and no analytics.
 - **Zustand** with AsyncStorage for state that persists on the device
 - **expo-notifications**, **expo-haptics**, **expo-file-system**, **expo-sharing**, **expo-document-picker**, **expo-clipboard**
 - **Jest** (jest-expo) unit tests for all the app's rules, **ESLint** with the React Compiler rules, **Prettier**
-- **GitHub Actions** CI and **EAS Build** for the iPhone and Android apps (no Mac needed)
+- **GitHub Actions**: CI on every push, and a release workflow that builds the Android APK and publishes it on the Releases page
+- **EAS Build** for store builds of the iPhone and Android apps (no Mac needed)
 
 ## Run it
 
@@ -54,6 +71,17 @@ Then:
 | `npm run format`    | Prettier                           |
 | `npm run check`     | Typecheck, lint and tests together |
 | `npm run build:web` | Static web build in `dist/`        |
+
+## Publish a new APK
+
+Push a version tag and GitHub builds the APK and adds it to Releases (about 15 minutes):
+
+```sh
+git tag v1.0.1
+git push origin v1.0.1
+```
+
+Or open **Actions, Android APK, Run workflow** and type a version. The APK is signed with the project's standard development key, which is fine for installing on your own phones. For the Play Store, build with EAS below, which manages a proper upload key.
 
 ## Build the iPhone and Android apps
 

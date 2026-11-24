@@ -14,6 +14,20 @@ Once a day you tell Tunas how it went: **Followed**, **Mostly** or **Missed**. M
 
 There is no iPhone download: Apple only allows installing apps through the App Store or TestFlight. See _Build the iPhone and Android apps_ below.
 
+## Home screen widgets
+
+On Android, long-press your home screen, tap **Widgets** and find **On Track**, or tap **Add** under Plan, Home screen widgets.
+
+| Widget             | Size   | What it does                                                                                                                                            |
+| ------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tunas check-in** | 4 by 2 | Tunas in a sky that follows the time of day, your streak, and three Tunas faces: tap Followed, Mostly or Missed to log the day without opening the app. |
+| **Tunas**          | 2 by 2 | Tunas, today's answer and your streak at a glance.                                                                                                      |
+| **This week**      | 4 by 1 | The week as seven little check, wave and cross discs.                                                                                                   |
+
+A tap on a widget saves straight into the app's storage on your phone, cancels that night's reminder and refreshes the other widgets.
+
+![Widgets](assets/widgets/checkin.png)
+
 ## Your data stays on your phone
 
 - Check-ins, notes, rules and weigh-ins are saved in the app's own storage on your phone. There is no account, no server, no cloud sync and no analytics.
@@ -42,6 +56,7 @@ Everything stays on the device. There is no account, no server and no analytics.
 - **Zustand** with AsyncStorage for state that persists on the device
 - **expo-notifications**, **expo-haptics**, **expo-file-system**, **expo-sharing**, **expo-document-picker**, **expo-clipboard**
 - **Jest** (jest-expo) unit tests for all the app's rules, **ESLint** with the React Compiler rules, **Prettier**
+- **react-native-android-widget** for the Android home screen widgets, drawn from the same Tunas artwork
 - **GitHub Actions**: CI on every push, and a release workflow that builds the Android APK and publishes it on the Releases page
 - **EAS Build** for store builds of the iPhone and Android apps (no Mac needed)
 

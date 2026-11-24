@@ -15,6 +15,56 @@ const OFFLINE_BLOCKED = [
   'android.permission.WRITE_EXTERNAL_STORAGE',
 ];
 
+const NUNITO = './node_modules/@expo-google-fonts/nunito';
+
+/** Android home screen widgets. Names match src/widgets/widgets.tsx. */
+const widgets: [string, Record<string, unknown>] = [
+  'react-native-android-widget',
+  {
+    fonts: [`${NUNITO}/700Bold/Nunito_700Bold.ttf`, `${NUNITO}/800ExtraBold/Nunito_800ExtraBold.ttf`],
+    widgets: [
+      {
+        name: 'CheckIn',
+        label: 'Tunas check-in',
+        description: 'Log your day with one tap on Tunas’s face.',
+        minWidth: '250dp',
+        minHeight: '110dp',
+        targetCellWidth: 4,
+        targetCellHeight: 2,
+        maxResizeWidth: '420dp',
+        maxResizeHeight: '220dp',
+        resizeMode: 'horizontal|vertical',
+        previewImage: './assets/widgets/checkin.png',
+        updatePeriodMillis: 1800000,
+      },
+      {
+        name: 'Tunas',
+        label: 'Tunas',
+        description: 'Tunas and your streak at a glance.',
+        minWidth: '110dp',
+        minHeight: '110dp',
+        targetCellWidth: 2,
+        targetCellHeight: 2,
+        resizeMode: 'horizontal|vertical',
+        previewImage: './assets/widgets/tunas.png',
+        updatePeriodMillis: 1800000,
+      },
+      {
+        name: 'Week',
+        label: 'This week',
+        description: 'Your week of check-ins.',
+        minWidth: '250dp',
+        minHeight: '50dp',
+        targetCellWidth: 4,
+        targetCellHeight: 1,
+        resizeMode: 'horizontal',
+        previewImage: './assets/widgets/week.png',
+        updatePeriodMillis: 1800000,
+      },
+    ],
+  },
+];
+
 export default ({ config }: ConfigContext): ExpoConfig => {
   const offline = process.env.ON_TRACK_OFFLINE === '1';
   return {
@@ -25,5 +75,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ...config.android,
       blockedPermissions: offline ? OFFLINE_BLOCKED : [],
     },
+    plugins: [...(config.plugins ?? []), widgets],
   };
 };

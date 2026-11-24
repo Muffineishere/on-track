@@ -2,7 +2,8 @@ import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import { Icon, type IconName } from '@/components/Icon';
-import { STATUS_ICON, StatusDisc, useStatusColors } from '@/components/StatusDisc';
+import { StatusDisc, useStatusColors } from '@/components/StatusDisc';
+import { TunasStill } from '@/components/tunas/Tunas';
 import { Button, Card, IconButton, Pressy, SectionTitle, Txt } from '@/components/ui';
 import { STATUSES, STATUS_LABEL, slipOf } from '@/domain/content';
 import { DOW, WEEK_LETTERS, addDays, formatLong, fromKey, keyOf, mondayOf, startOfDay } from '@/domain/dates';
@@ -21,7 +22,6 @@ import { pickLineFor } from './lineFor';
 
 export function AnswerTiles({ current, onAnswer }: { current?: Status | null; onAnswer: (s: Status) => void }) {
   const sc = useStatusColors();
-  const { c } = useTheme();
   return (
     <View style={{ flexDirection: 'row', gap: 10 }} accessibilityRole="radiogroup">
       {STATUSES.map((s) => {
@@ -37,30 +37,23 @@ export function AnswerTiles({ current, onAnswer }: { current?: Status | null; on
             onPress={() => onAnswer(s)}
             style={{
               flex: 1,
-              minHeight: 112,
-              borderRadius: RADIUS.tile + 2,
+              minHeight: 128,
+              paddingTop: 6,
+              paddingBottom: 12,
+              borderRadius: RADIUS.tile + 4,
               backgroundColor: sc[s].soft,
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 10,
-              borderWidth: 2,
+              gap: 2,
+              borderWidth: 2.5,
               borderColor: on ? sc[s].fill : 'transparent',
             }}
           >
-            <View
-              style={{
-                width: 50,
-                height: 50,
-                borderRadius: 25,
-                backgroundColor: sc[s].fill,
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: `0 4px 10px ${c.line}`,
-              }}
-            >
-              <Icon name={STATUS_ICON[s]} size={26} color={sc[s].on} />
-            </View>
-            <Txt v="bodyBold">{STATUS_LABEL[s]}</Txt>
+            {/* Tunas's face says the answer: beaming, content, or sleepy. The same faces are on the home screen widget. */}
+            <TunasStill stage={1} mood={s} outfit={null} size={80} />
+            <Txt v="bodyBold" color={on ? sc[s].text : undefined}>
+              {STATUS_LABEL[s]}
+            </Txt>
           </Pressy>
         );
       })}

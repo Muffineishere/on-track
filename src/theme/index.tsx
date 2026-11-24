@@ -16,8 +16,8 @@ export const FONT = {
 } as const;
 
 export const TYPE = {
-  display: { fontFamily: FONT.heavy, fontSize: 32, lineHeight: 38, letterSpacing: -0.6 },
-  title: { fontFamily: FONT.heavy, fontSize: 24, lineHeight: 30, letterSpacing: -0.3 },
+  display: { fontFamily: FONT.black, fontSize: 33, lineHeight: 39, letterSpacing: -0.6 },
+  title: { fontFamily: FONT.black, fontSize: 24, lineHeight: 30, letterSpacing: -0.3 },
   headline: { fontFamily: FONT.heavy, fontSize: 18, lineHeight: 24, letterSpacing: -0.1 },
   body: { fontFamily: FONT.semibold, fontSize: 16, lineHeight: 23 },
   bodyBold: { fontFamily: FONT.bold, fontSize: 16, lineHeight: 23 },
@@ -34,7 +34,7 @@ export type TypeVariant = keyof typeof TYPE;
 export const SPACE = { xs: 4, s: 8, m: 12, l: 16, xl: 20, xxl: 24, xxxl: 32 } as const;
 
 /** Radius steps: large surfaces, tiles, controls, small marks. Pills only for chips. */
-export const RADIUS = { sheet: 28, card: 24, tile: 18, control: 14, small: 10, pill: 999 } as const;
+export const RADIUS = { sheet: 32, card: 28, tile: 20, control: 16, small: 12, pill: 999 } as const;
 
 /** Phone column width on large screens and the web. */
 export const MAX_WIDTH = 560;

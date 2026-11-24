@@ -45,10 +45,10 @@ export interface Palette {
 }
 
 export const light: Palette = {
-  bg: '#F5F2EB',
+  bg: '#FAF5EC',
   surface: '#FFFFFF',
-  surface2: '#EEEAE2',
-  surface3: '#E4DFD5',
+  surface2: '#F2ECE1',
+  surface3: '#E6DFD2',
   line: 'rgba(29, 38, 33, 0.09)',
   ink: '#1D2621',
   ink2: '#4F5A53',

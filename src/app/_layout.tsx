@@ -10,6 +10,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppTabs from '@/components/AppTabs';
 import { ToastView } from '@/components/Toast';
 import { syncReminders } from '@/lib/reminders';
+import { updateWidgets } from '@/widgets/sync';
 import { Onboarding } from '@/sheets/Onboarding';
 import { SheetHost } from '@/sheets/SheetHost';
 import { useDataStore } from '@/store/data';
@@ -47,7 +48,10 @@ function Shell() {
 
   // Keep the next two weeks of reminders in step with the user's answers and settings.
   useEffect(() => {
-    const timer = setTimeout(() => syncReminders(data, new Date()), 600);
+    const timer = setTimeout(() => {
+      syncReminders(data, new Date());
+      updateWidgets(data);
+    }, 600);
     return () => clearTimeout(timer);
   }, [data]);
 
@@ -55,7 +59,9 @@ function Shell() {
   useEffect(() => {
     if (data.onboarded) maybeRecap(new Date());
     const sub = AppState.addEventListener('change', (s) => {
-      if (s === 'active') maybeRecap(new Date());
+      if (s !== 'active') return;
+      // A home screen widget may have logged a day while the app was in the background.
+      useDataStore.persist.rehydrate().then(() => maybeRecap(new Date()));
     });
     return () => sub.remove();
   }, [data.onboarded]);

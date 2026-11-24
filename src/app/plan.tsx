@@ -12,6 +12,7 @@ import { stageOf } from '@/domain/stage';
 import { countGood, rulesFor } from '@/domain/state';
 import type { ThemePref } from '@/domain/types';
 import { DietList } from '@/features/plan/DietList';
+import { WidgetsCard } from '@/features/plan/WidgetsCard';
 import { addRule, removeRule, switchDiet } from '@/features/plan/ruleActions';
 import { remindersSupported } from '@/lib/reminders';
 import { store, useActive, useIsDemo } from '@/store/data';
@@ -146,6 +147,8 @@ export default function PlanScreen() {
           </View>
         ) : null}
       </Card>
+
+      <WidgetsCard />
 
       <Card style={{ paddingVertical: 6 }}>
         <Row

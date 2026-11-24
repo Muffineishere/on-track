@@ -17,7 +17,7 @@ Warm linen neutrals and a deep evergreen carry the brand. The three answers each
 
 | Role       | Light                       | Dark                        | Use                           |
 | ---------- | --------------------------- | --------------------------- | ----------------------------- |
-| Background | `#F5F2EB`                   | `#0E1311`                   | App canvas, sheets            |
+| Background | `#FAF5EC`                   | `#0E1311`                   | App canvas, sheets            |
 | Surface    | `#FFFFFF`                   | `#161D1A`                   | Cards                         |
 | Surface 2  | `#EEEAE2`                   | `#1F2824`                   | Tracks, inset controls, chips |
 | Ink        | `#1D2621` (13.9:1)          | `#EDF1EE` (16.5:1)          | Primary text                  |
@@ -45,8 +45,8 @@ Nunito, because it is rounded like Tunas and stays warm at heavy weights. One fa
 
 | Style    | Font          | Size / line            | Use                                 |
 | -------- | ------------- | ---------------------- | ----------------------------------- |
-| Display  | ExtraBold 800 | 32 / 38, tracking -0.6 | Screen titles, celebration headline |
-| Title    | ExtraBold 800 | 24 / 30                | Sheet titles, the check-in question |
+| Display  | Black 900     | 33 / 39, tracking -0.6 | Screen titles, celebration headline |
+| Title    | Black 900     | 24 / 30                | Sheet titles, the check-in question |
 | Headline | ExtraBold 800 | 18 / 24                | Card titles                         |
 | Body     | SemiBold 600  | 16 / 23                | Text                                |
 | Callout  | SemiBold 600  | 15 / 21                | Supporting text                     |
@@ -59,12 +59,13 @@ No uppercase labels with wide tracking.
 ## Space, shape, depth
 
 - 4-point spacing; screens use 20 side padding and 18 between cards.
-- Radius steps: sheet 28, card 24, tile 18, control 14, small 10. Only chips and the toast are pills.
+- Radius steps: sheet 32, card 28, tile 20, control 16, small 12. Soft and round like Tunas. Only chips and the toast are pills.
 - Light mode cards get a hairline and a soft two-step shadow. Dark mode drops shadows and uses lighter surfaces for elevation. Floating layers (sheets, toast, web tab bar) get the only strong shadows.
 
 ## Components
 
-- **Answer tiles:** three soft-tinted tiles, each with a filled status disc and label. Pressed: a spring squash and a haptic.
+- **Answer tiles:** three soft-tinted tiles, each with Tunas's face showing the answer (beaming, content, sleepy) and its label. Pressed: a spring squash and a haptic. The same faces are the buttons on the home screen widget, so the app and the widget feel like one thing.
+- **Widgets:** drawn from SVG strings of the same Tunas (src/widgets/art.ts) on the time-of-day sky. The check-in widget drops the sun and moon so nothing competes with its title.
 - **Status disc:** check (Followed), wave (Mostly), cross (Missed), shield (a free miss covered it).
 - **Sheets:** slide up in their own modal layer, swipe the handle down or tap outside to close, Escape and the Android back button work too.
 - **Celebration:** full screen, tinted by the answer. Tunas jumps, streak and good-day counts tick up, the growth bar fills, confetti for good days and new stages.

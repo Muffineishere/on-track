@@ -1,0 +1,33 @@
+name: EAS build
+
+# Builds the iPhone and Android apps in Expo's cloud. Run it by hand from the Actions tab
+# after adding an EXPO_TOKEN secret (see README).
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Platform
+        type: choice
+        options: [all, ios, android]
+        default: all
+      profile:
+        description: Build profile from eas.json
+        type: choice
+        options: [preview, production, development]
+        default: preview
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - run: npm ci
+      - run: eas build --platform ${{ inputs.platform }} --profile ${{ inputs.profile }} --non-interactive --no-wait

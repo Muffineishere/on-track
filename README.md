@@ -1,56 +1,98 @@
-# Welcome to your Expo app 👋
+# On Track
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A diet-adherence tracker for one person in Malaysia, with Tunas, a small plant creature that grows as good days add up.
 
-## Get started
+Once a day you tell Tunas how it went: **Followed**, **Mostly** or **Missed**. Mostly still counts, a free miss arrives every Monday, and a bad day never takes away progress already made. The month grows into a little garden island, Tunas moves from seed to little tree, and outfits unlock along the way. Weight tracking is optional and shows a smoothed trend, not the daily number.
 
-1. Install dependencies
+## What's in the app
 
-   ```bash
-   npm install
-   ```
+| Tab        | What it does                                                                                                                                                                                                                                                                                                     |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Today**  | Tunas in a sky that follows the time of day (tap to say hi, hold for a cuddle, it watches your finger). One-tap check-in with a full-screen celebration, this week at a glance, today's rules as a checklist with a kitchen-cutoff countdown, and gentle nudges for a missed day or a weekly weigh-in.           |
+| **Garden** | The month as an isometric garden: good days grow trees and flowers, a perfect week blossoms, a free miss leaves a resting stone. Switch to a calendar view; tap any day to edit it. Also Tunas's journey through five stages, the wardrobe and weekday patterns with a suggested rule for your most common slip. |
+| **Weight** | Trend weight with a smooth chart you can scrub, the change since you started, an optional goal with a rough arrival month, and the full history.                                                                                                                                                                 |
+| **Plan**   | Four plans (or your own), editable rules with suggestions, a daily reminder, light or dark appearance, backup and restore, sample data and start over.                                                                                                                                                           |
 
-2. Start the app
+Reminders are real local notifications: one per day at your chosen time for the next two weeks, skipped on days you've already checked in.
 
-   ```bash
-   npx expo start
-   ```
+Everything stays on the device. There is no account, no server and no analytics.
 
-In the output, you'll find options to open the app in a
+## Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **TypeScript** (strict) on **React Native 0.88** with **Expo SDK 58** and the New Architecture
+- **Expo Router** with the system tab bar (`NativeTabs`: Liquid Glass on iOS 26, Material on Android) and a custom tab bar on the web
+- **Reanimated 4** and **Gesture Handler 3** for Tunas, sheets, confetti and the chart
+- **react-native-svg** for Tunas, the sky, the garden island, icons and the chart
+- **Zustand** with AsyncStorage for state that persists on the device
+- **expo-notifications**, **expo-haptics**, **expo-file-system**, **expo-sharing**, **expo-document-picker**, **expo-clipboard**
+- **Jest** (jest-expo) unit tests for all the app's rules, **ESLint** with the React Compiler rules, **Prettier**
+- **GitHub Actions** CI and **EAS Build** for the iPhone and Android apps (no Mac needed)
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Run it
 
-## Get a fresh project
+You need Node 22 or newer.
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```sh
+npm install
+npm start
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+Then:
 
-### Other setup steps
+- **On your phone:** install **Expo Go** from the App Store or Play Store and scan the QR code. Notifications and haptics work best in a development build (below).
+- **In a browser:** press `w`, or run `npm run web`.
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### Scripts
 
-## Learn more
+| Command             | What it does                       |
+| ------------------- | ---------------------------------- |
+| `npm start`         | Start the dev server               |
+| `npm run web`       | Start and open the web version     |
+| `npm test`          | Unit tests                         |
+| `npm run typecheck` | TypeScript                         |
+| `npm run lint`      | ESLint                             |
+| `npm run format`    | Prettier                           |
+| `npm run check`     | Typecheck, lint and tests together |
+| `npm run build:web` | Static web build in `dist/`        |
 
-To learn more about developing your project with Expo, look at the following resources:
+## Build the iPhone and Android apps
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Builds run in Expo's cloud, so an iPhone build doesn't need a Mac.
 
-## Join the community
+1. Create a free Expo account, then link the project once:
+   ```sh
+   npx eas-cli@latest login
+   npx eas-cli@latest init
+   ```
+2. Build:
+   ```sh
+   npx eas-cli@latest build --profile preview --platform android   # an APK you can install directly
+   npx eas-cli@latest build --profile development --platform ios   # a dev build for your own iPhone
+   ```
+   Installing on an iPhone needs an Apple Developer account. `eas device:create` registers your phone.
+3. To build from GitHub instead, add an `EXPO_TOKEN` repository secret (from expo.dev, Account settings, Access tokens) and run the **EAS build** workflow from the Actions tab.
 
-Join our community of developers creating universal apps.
+Before publishing to a store, change `ios.bundleIdentifier` and `android.package` in `app.json` (now `com.ontrack.tunas`) to an identifier you own.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Project layout
+
+```
+src/
+  app/          Routes: Today (index), Garden, Weight, Plan, and the root layout
+  domain/       The app's rules as plain TypeScript: streaks, free misses, cutoffs,
+                weight trend, garden layout, recap, backups. Fully unit tested.
+  store/        Zustand stores (saved data, sheets and toasts) and check-in flows
+  components/   Tunas, the sky scene, the garden island, sheets, toasts, confetti, UI kit
+  features/     Pieces of each tab
+  sheets/       Bottom sheets, the celebration and onboarding
+  theme/        Palette, type scale, spacing and radii (see DESIGN.md)
+  lib/          Haptics, reminders, clock
+```
+
+`PRODUCT.md` describes who the app is for and why. `DESIGN.md` records the visual system.
+
+## Notes
+
+- **App icon:** the icon and splash are placeholders drawn from Tunas. Swap the files in `assets/images` when you have a final icon.
+- **Backups** are plain JSON. Backups from the earlier single-file web version of On Track restore too.
+- **License:** none chosen yet. The repository is private.
